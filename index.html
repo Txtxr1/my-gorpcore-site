@@ -3,22 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Каталог одежды и обуви</title>
+  <title>Gorpcore Каталог</title>
   <style>
-    body { font-family: Arial, sans-serif; }
-    #categories-list { margin-top: 20px; }
-    .category { margin-bottom: 15px; }
-    .subcategory { margin-left: 20px; }
-    .subcategory a { display: block; padding: 5px; text-decoration: none; color: #333; }
-    .subcategory a:hover { background-color: #f0f0f0; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background-color: #f8f8f8;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1em 0;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      padding: 0.5em;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 1em;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #555;
+    }
+
+    main {
+      padding: 1em;
+    }
+
+    #categories-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .category {
+      width: 200px;
+      margin: 1em;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .category h2 {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.5em;
+      text-align: center;
+      margin: 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .category h2:hover {
+      background-color: #3e8e41;
+    }
+
+    .subcategories {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .subcategory {
+      padding: 0.5em;
+      border-bottom: 1px solid #eee;
+    }
+
+    .subcategory a {
+      display: block;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.3s ease;
+    }
+
+    .subcategory a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 1em;
+    }
+
+    .product {
+      width: 200px;
+      margin: 1em;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .product h3 {
+      padding: 0.5em;
+      margin: 0;
+      font-size: 1.1em;
+      text-align: center;
+    }
+
+    .product a {
+      display: block;
+      padding: 0.5em;
+      text-decoration: none;
+      color: #007bff;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .product a:hover {
+      background-color: #e9ecef;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1em;
+      background-color: #333;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Каталог одежды и обуви</h1>
+    <h1>Gorpcore Каталог</h1>
     <nav>
-      <!-- Здесь может быть навигация, если необходимо -->
+      <a href="#">Новинки</a>
+      <a href="#">Скидки</a>
+      <a href="#">О нас</a>
     </nav>
   </header>
 
@@ -26,45 +159,85 @@
     <section id="categories-list">
       <!-- Сюда JavaScript будет добавлять категории -->
     </section>
+
+    <section id="products-container" style="display: none;">
+      <h2>Товары</h2>
+      <div class="products">
+        <!-- Сюда JavaScript будет добавлять товары -->
+      </div>
+    </section>
   </main>
 
   <footer>
-    <p>© 2024 Мой каталог</p>
+    <p>© 2024 Gorpcore Каталог</p>
   </footer>
 
   <script>
-    // Функция для загрузки JSON-файла
     async function loadJSON(url) {
-      const response = await fetch(url);
-      return await response.json();
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Ошибка при загрузке JSON:", error);
+        return null;
+      }
     }
 
     document.addEventListener("DOMContentLoaded", async function() {
-      try {
-        // Загружаем данные из categories.json
-        const categoriesData = await loadJSON('categories.json');
+      const categoriesList = document.getElementById('categories-list');
+      const productsContainer = document.getElementById('products-container');
+      const productsDiv = productsContainer.querySelector('.products');
 
-        // Получаем элемент, куда будем добавлять категории
-        const categoriesList = document.getElementById('categories-list');
+      const categoriesData = await loadJSON('categories.json');
 
-        // Обрабатываем каждую категорию
+      if (categoriesData) {
         categoriesData.forEach(category => {
           const categoryElement = document.createElement('div');
           categoryElement.classList.add('category');
-          categoryElement.innerHTML = `<h2>${category.name}</h2>`;
+
+          const categoryHeader = document.createElement('h2');
+          categoryHeader.textContent = category.name;
+          categoryHeader.addEventListener('click', () => {
+            // Показываем все товары категории, а не только подкатегории
+            productsContainer.style.display = 'flex';
+            productsDiv.innerHTML = ''; // Очищаем предыдущие товары
+
+            if(category.subcategories) { // Проверяем есть ли подкатегории
+              category.subcategories.forEach(subcategory => {
+                if(subcategory.products){
+                  subcategory.products.forEach(product => {
+                    addProductToContainer(product, productsDiv);
+                  });
+                }
+              });
+            }
+          });
+          categoryElement.appendChild(categoryHeader); // Добавляем заголовок в categoryElement
 
           const subcategoriesList = document.createElement('ul');
           subcategoriesList.classList.add('subcategories');
 
-          // Обрабатываем каждую подкатегорию
           category.subcategories.forEach(subcategory => {
             const subcategoryElement = document.createElement('li');
             subcategoryElement.classList.add('subcategory');
-
-            // Создаем ссылку на подкатегорию (в данном примере просто якорь)
             const subcategoryLink = document.createElement('a');
-            subcategoryLink.href = `#${subcategory.slug}`; // Создаем якорь
+            subcategoryLink.href = "#"; // Уберем якорь, функциональность ниже
             subcategoryLink.textContent = subcategory.name;
+
+            subcategoryLink.addEventListener('click', (event) => { // Добавляем обработчик клика
+              event.preventDefault(); // Предотвращаем переход по ссылке
+              productsContainer.style.display = 'flex'; // Делаем блок с товарами видимым
+              productsDiv.innerHTML = ''; // Очищаем предыдущие товары
+
+              if (subcategory.products) {
+                subcategory.products.forEach(product => {
+                    addProductToContainer(product, productsDiv);
+                });
+              }
+            });
 
             subcategoryElement.appendChild(subcategoryLink);
             subcategoriesList.appendChild(subcategoryElement);
@@ -73,10 +246,19 @@
           categoryElement.appendChild(subcategoriesList);
           categoriesList.appendChild(categoryElement);
         });
+      } else {
+        categoriesList.textContent = "Ошибка: не удалось загрузить данные о категориях.";
+      }
 
-      } catch (error) {
-        console.error("Ошибка при загрузке или обработке данных:", error);
-        categoriesList.textContent = "Ошибка при загрузке данных. Пожалуйста, обновите страницу.";
+      function addProductToContainer(product, container) {
+        const productElement = document.createElement('div');
+        productElement.classList.add('product');
+        productElement.innerHTML = `
+          <img src="" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <a href="#">Подробнее</a>
+        `;
+        container.appendChild(productElement);
       }
     });
   </script>
