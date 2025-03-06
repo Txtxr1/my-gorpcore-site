@@ -1,18 +1,43 @@
-$(document).ready(function() {
-  $.getJSON('categories.json', function(data) {
-    const categoriesList = $('#categories-list'); // Предполагаем, что в index.html есть элемент с id="categories-list"
+const categoriesData = [
+  {
+    "id": 1,
+    "name": "Одежда",
+    "slug": "odezhda",
+    "subcategories": [
+      { "id": 11, "name": "Футболки", "slug": "futbolki" },
+      { "id": 12, "name": "Брюки", "slug": "bryuki" }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Обувь",
+    "slug": "obuv",
+    "subcategories": [
+      { "id": 21, "name": "Кроссовки", "slug": "krossovki" },
+      { "id": 22, "name": "Ботинки", "slug": "botinki" }
+    ]
+  }
+];
 
-    $.each(data, function(i, category) {
-      const categoryElement = $('<div><h2>' + category.name + '</h2></div>');
+document.addEventListener("DOMContentLoaded", function() {
+  const categoriesList = document.getElementById('categories-list');
 
-      const subcategoriesList = $('<ul></ul>');
-      $.each(category.subcategories, function(j, subcategory) {
-        const subcategoryElement = $('<li>' + subcategory.name + '</li>');
-        subcategoriesList.append(subcategoryElement);
-      });
+  categoriesData.forEach(category => {
+    const categoryElement = document.createElement('div');
+    categoryElement.classList.add('category');
+    categoryElement.innerHTML = `<h2>${category.name}</h2>`;
 
-      categoryElement.append(subcategoriesList);
-      categoriesList.append(categoryElement);
+    const subcategoriesList = document.createElement('ul');
+    subcategoriesList.classList.add('subcategories');
+
+    category.subcategories.forEach(subcategory => {
+      const subcategoryElement = document.createElement('li');
+      subcategoryElement.classList.add('subcategory');
+      subcategoryElement.textContent = subcategory.name;
+      subcategoriesList.appendChild(subcategoryElement);
     });
+
+    categoryElement.appendChild(subcategoriesList);
+    categoriesList.appendChild(categoryElement);
   });
 });
