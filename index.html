@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gorpcore Каталог</title>
   <style>
+    /* Ваши стили CSS (из предыдущих версий) */
     body {
       font-family: sans-serif;
       margin: 0;
-      background-color: #121212; /* Темный фон */
-      color: #eee; /* Светлый текст */
+      background-color: #121212;
+      color: #eee;
       line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s; /* Плавный переход для смены темы */
     }
 
     header {
@@ -59,6 +61,11 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       overflow: hidden;
+      transition: transform 0.3s ease; /* Плавная анимация при наведении */
+    }
+
+    .category:hover {
+      transform: scale(1.05);
     }
 
     .category h2 {
@@ -111,6 +118,11 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .product:hover {
+      transform: translateY(-5px); /* Поднимаем товар при наведении */
     }
 
     .product img {
@@ -118,7 +130,12 @@
       height: 200px;
       object-fit: cover;
       border-bottom: 1px solid #444;
-      filter: grayscale(100%); /* Черно-белые изображения */
+      filter: grayscale(100%);
+      transition: filter 0.3s ease; /* Плавный переход для фильтра */
+    }
+
+    .product img:hover {
+      filter: grayscale(0%); /* Возвращаем цвет при наведении */
     }
 
     .product h3 {
@@ -132,7 +149,7 @@
       display: block;
       padding: 0.5em;
       text-decoration: none;
-      color: #80deea; /* Бирюзовый цвет для ссылок */
+      color: #80deea;
       text-align: center;
       transition: background-color 0.3s ease;
     }
@@ -163,23 +180,49 @@
       text-align: center;
       margin-top: 2em;
     }
+
+    /* Переключатель темы */
+    #theme-toggle {
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      background-color: #555;
+      color: #eee;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #theme-toggle:hover {
+      background-color: #777;
+    }
+
   </style>
 </head>
 <body>
+
+  <button id="theme-toggle">Сменить тему</button>  <!-- Переключатель темы -->
 
   <header>
     <h1>Gorpcore Каталог</h1>
     <nav>
       <a href="#">Главная</a>
       <a href="#">Каталог</a>
-      <a href="#">О Воронеже</a>
       <a href="#">О нас</a>
       <a href="#">Контакты</a>
     </nav>
   </header>
 
   <main>
+    <section id="location">
+      <h2>Наш магазин в Воронеже</h2>
+      <p>Приходите к нам по адресу: ул. Кольцовская, 1.</p>
+    </section>
+
     <section id="categories-list">
+      <h2>Одежда и обувь</h2>  <!-- Текст в каталог -->
       <!-- Сюда JavaScript будет добавлять категории -->
     </section>
 
@@ -190,13 +233,11 @@
       </div>
     </section>
 
-    <section id="location">
-      <h2>Наш магазин в Воронеже</h2>
-      <p>Приходите к нам по адресу: ул. Кольцовская, 1.</p>
-    </section>
-
     <section id="about-us">
-      <h2>Сделано Никитой и Вовой</h2>
+      <h2>О нас</h2>
+      <p>Мы — небольшая команда энтузиастов, любящих удобную и функциональную одежду в стиле gorpcore.</p>
+      <h3>Информация о производстве</h3>
+      <p>Мы работаем с проверенными поставщиками, которые используют качественные и экологичные материалы. Вся наша одежда проходит строгий контроль качества.</p>
       <p>"Лучший способ предсказать будущее — это создать его." - Питер Друкер</p>
       <p>"Невозможное — это всего лишь громкое слово, за которым прячутся маленькие люди." - Мухаммед Али</p>
     </section>
@@ -208,6 +249,12 @@
   </footer>
 
   <script>
+    // Функция переключения темы
+    function toggleTheme() {
+      const body = document.body;
+      body.classList.toggle('light-theme');
+    }
+
     async function loadJSON(url) {
       try {
         const response = await fetch(url);
@@ -236,11 +283,9 @@
           const categoryHeader = document.createElement('h2');
           categoryHeader.textContent = category.name;
           categoryHeader.addEventListener('click', () => {
-            // Показываем все товары категории, а не только подкатегории
             productsContainer.style.display = 'flex';
-            productsDiv.innerHTML = ''; // Очищаем предыдущие товары
-
-            if(category.subcategories) { // Проверяем есть ли подкатегории
+            productsDiv.innerHTML = '';
+            if(category.subcategories) {
               category.subcategories.forEach(subcategory => {
                 if(subcategory.products){
                   subcategory.products.forEach(product => {
@@ -250,7 +295,7 @@
               });
             }
           });
-          categoryElement.appendChild(categoryHeader); // Добавляем заголовок в categoryElement
+          categoryElement.appendChild(categoryHeader);
 
           const subcategoriesList = document.createElement('ul');
           subcategoriesList.classList.add('subcategories');
@@ -259,17 +304,17 @@
             const subcategoryElement = document.createElement('li');
             subcategoryElement.classList.add('subcategory');
             const subcategoryLink = document.createElement('a');
-            subcategoryLink.href = "#"; // Уберем якорь, функциональность ниже
+            subcategoryLink.href = "#";
             subcategoryLink.textContent = subcategory.name;
 
-            subcategoryLink.addEventListener('click', (event) => { // Добавляем обработчик клика
-              event.preventDefault(); // Предотвращаем переход по ссылке
-              productsContainer.style.display = 'flex'; // Делаем блок с товарами видимым
-              productsDiv.innerHTML = ''; // Очищаем предыдущие товары
+            subcategoryLink.addEventListener('click', (event) => {
+              event.preventDefault();
+              productsContainer.style.display = 'flex';
+              productsDiv.innerHTML = '';
 
               if (subcategory.products) {
                 subcategory.products.forEach(product => {
-                    addProductToContainer(product, productsDiv);
+                  addProductToContainer(product, productsDiv);
                 });
               }
             });
@@ -286,6 +331,13 @@
       }
 
       function addProductToContainer(product, container) {
+        const imagePath = product.image;
+        const img = new Image();
+        img.src = imagePath;
+        img.onerror = () => {
+            console.error(`Изображение не найдено: ${imagePath}`);
+        };
+
         const productElement = document.createElement('div');
         productElement.classList.add('product');
         productElement.innerHTML = `
@@ -295,6 +347,10 @@
         `;
         container.appendChild(productElement);
       }
+
+      // Добавляем обработчик для переключателя темы
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', toggleTheme);
     });
   </script>
 </body>
