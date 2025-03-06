@@ -9,6 +9,8 @@
     #categories-list { margin-top: 20px; }
     .category { margin-bottom: 15px; }
     .subcategory { margin-left: 20px; }
+    .subcategory a { display: block; padding: 5px; text-decoration: none; color: #333; }
+    .subcategory a:hover { background-color: #f0f0f0; }
   </style>
 </head>
 <body>
@@ -31,48 +33,51 @@
   </footer>
 
   <script>
-    const categoriesData = [
-      {
-        "id": 1,
-        "name": "Одежда",
-        "slug": "odezhda",
-        "subcategories": [
-          { "id": 11, "name": "Футболки", "slug": "futbolki" },
-          { "id": 12, "name": "Брюки", "slug": "bryuki" }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Обувь",
-        "slug": "obuv",
-        "subcategories": [
-          { "id": 21, "name": "Кроссовки", "slug": "krossovki" },
-          { "id": 22, "name": "Ботинки", "slug": "botinki" }
-        ]
-      }
-    ];
+    // Функция для загрузки JSON-файла
+    async function loadJSON(url) {
+      const response = await fetch(url);
+      return await response.json();
+    }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      const categoriesList = document.getElementById('categories-list');
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        // Загружаем данные из categories.json
+        const categoriesData = await loadJSON('categories.json');
 
-      categoriesData.forEach(category => {
-        const categoryElement = document.createElement('div');
-        categoryElement.classList.add('category');
-        categoryElement.innerHTML = `<h2>${category.name}</h2>`;
+        // Получаем элемент, куда будем добавлять категории
+        const categoriesList = document.getElementById('categories-list');
 
-        const subcategoriesList = document.createElement('ul');
-        subcategoriesList.classList.add('subcategories');
+        // Обрабатываем каждую категорию
+        categoriesData.forEach(category => {
+          const categoryElement = document.createElement('div');
+          categoryElement.classList.add('category');
+          categoryElement.innerHTML = `<h2>${category.name}</h2>`;
 
-        category.subcategories.forEach(subcategory => {
-          const subcategoryElement = document.createElement('li');
-          subcategoryElement.classList.add('subcategory');
-          subcategoryElement.textContent = subcategory.name;
-          subcategoriesList.appendChild(subcategoryElement);
+          const subcategoriesList = document.createElement('ul');
+          subcategoriesList.classList.add('subcategories');
+
+          // Обрабатываем каждую подкатегорию
+          category.subcategories.forEach(subcategory => {
+            const subcategoryElement = document.createElement('li');
+            subcategoryElement.classList.add('subcategory');
+
+            // Создаем ссылку на подкатегорию (в данном примере просто якорь)
+            const subcategoryLink = document.createElement('a');
+            subcategoryLink.href = `#${subcategory.slug}`; // Создаем якорь
+            subcategoryLink.textContent = subcategory.name;
+
+            subcategoryElement.appendChild(subcategoryLink);
+            subcategoriesList.appendChild(subcategoryElement);
+          });
+
+          categoryElement.appendChild(subcategoriesList);
+          categoriesList.appendChild(categoryElement);
         });
 
-        categoryElement.appendChild(subcategoriesList);
-        categoriesList.appendChild(categoryElement);
-      });
+      } catch (error) {
+        console.error("Ошибка при загрузке или обработке данных:", error);
+        categoriesList.textContent = "Ошибка при загрузке данных. Пожалуйста, обновите страницу.";
+      }
     });
   </script>
 </body>
