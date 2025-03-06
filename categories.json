@@ -4,8 +4,52 @@
     "name": "Одежда",
     "slug": "odezhda",
     "subcategories": [
-      { "id": 11, "name": "Футболки", "slug": "futbolki" },
-      { "id": 12, "name": "Брюки", "slug": "bryuki" }
+      {
+        "id": 11,
+        "name": "Куртки",
+        "slug": "kurtki",
+        "products": [
+          {
+            "id": 111,
+            "name": "Куртка The North Face Nuptse",
+            "slug": "tnf-nuptse",
+            "image": "img/tnf_nuptse.jpg",
+            "price": 35000,
+            "description": "Классическая пуховая куртка для города и гор."
+          },
+          {
+            "id": 112,
+            "name": "Куртка Arc'teryx Beta AR",
+            "slug": "arcteryx-beta-ar",
+            "image": "img/arcteryx_beta_ar.jpg",
+            "price": 60000,
+            "description": "Мембранная куртка для защиты от любой непогоды."
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "name": "Штаны",
+        "slug": "shtany",
+        "products": [
+          {
+            "id": 121,
+            "name": "Штаны Salomon Wayfarer",
+            "slug": "salomon-wayfarer",
+            "image": "img/salomon_wayfarer.jpg",
+            "price": 12000,
+            "description": "Удобные и прочные штаны для треккинга."
+          },
+          {
+            "id": 122,
+            "name": "Штаны Stone Island",
+            "slug": "stone-island",
+            "image": "img/stone_island_pants.jpg",
+            "price": 40000,
+            "description": "Функциональные штаны премиум-класса."
+          }
+        ]
+      }
     ]
   },
   {
@@ -13,8 +57,29 @@
     "name": "Обувь",
     "slug": "obuv",
     "subcategories": [
-      { "id": 21, "name": "Кроссовки", "slug": "krossovki" },
-      { "id": 22, "name": "Ботинки", "slug": "botinki" }
+      {
+        "id": 21,
+        "name": "Кроссовки",
+        "slug": "krossovki",
+        "products": [
+          {
+            "id": 211,
+            "name": "Кроссовки Salomon XT-6",
+            "slug": "salomon-xt6",
+            "image": "img/salomon_xt6.jpg",
+            "price": 18000,
+            "description": "Легендарные трейловые кроссовки для города."
+          },
+          {
+            "id": 212,
+            "name": "Кроссовки Hoka Speedgoat 5",
+            "slug": "hoka-speedgoat",
+            "image": "img/hoka_speedgoat.jpg",
+            "price": 15000,
+            "description": "Кроссовки для бега по пересеченной местности с отличной амортизацией."
+          }
+        ]
+      }
     ]
   }
 ]
