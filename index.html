@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gorpcore Каталог</title>
   <style>
-    /* Ваши стили CSS (из предыдущих версий) */
+    /* Ваши стили CSS (из предыдущих версий), обновленные */
     body {
       font-family: sans-serif;
       margin: 0;
       background-color: #121212;
       color: #eee;
       line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s; /* Плавный переход для смены темы */
+      transition: background-color 0.3s, color 0.3s;
     }
 
     header {
@@ -48,10 +48,42 @@
       padding: 1em;
     }
 
+    #location {
+      text-align: center;
+      margin-top: 2em;
+    }
+
+    /* Стили для каталога */
+    #catalog-toggle {
+      background-color: #555;
+      color: #eee;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 1em;
+      display: block;
+      width: 200px;
+      margin: 1em auto;
+    }
+
+    #catalog-toggle:hover {
+      background-color: #777;
+    }
+
     #categories-list {
-      display: flex;
+      display: none; /* Скрываем каталог по умолчанию */
       flex-wrap: wrap;
       justify-content: center;
+      opacity: 0;
+      transition: opacity 0.5s ease, display 0s 0.5s; /* Добавляем transition для плавного появления */
+    }
+
+    #categories-list.open {
+      display: flex; /* Показываем каталог */
+      opacity: 1;
+      transition: opacity 0.5s ease, display 0s; /* Убираем задержку для display */
     }
 
     .category {
@@ -61,7 +93,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       overflow: hidden;
-      transition: transform 0.3s ease; /* Плавная анимация при наведении */
+      transition: transform 0.3s ease;
     }
 
     .category:hover {
@@ -122,7 +154,7 @@
     }
 
     .product:hover {
-      transform: translateY(-5px); /* Поднимаем товар при наведении */
+      transform: translateY(-5px);
     }
 
     .product img {
@@ -131,11 +163,11 @@
       object-fit: cover;
       border-bottom: 1px solid #444;
       filter: grayscale(100%);
-      transition: filter 0.3s ease; /* Плавный переход для фильтра */
+      transition: filter 0.3s ease;
     }
 
     .product img:hover {
-      filter: grayscale(0%); /* Возвращаем цвет при наведении */
+      filter: grayscale(0%);
     }
 
     .product h3 {
@@ -158,14 +190,6 @@
       background-color: #444;
     }
 
-    footer {
-      text-align: center;
-      padding: 1em;
-      background-color: #212121;
-      color: #eee;
-      border-top: 1px solid #333;
-    }
-
     #about-us {
       margin-top: 2em;
       text-align: center;
@@ -174,11 +198,6 @@
     #about-us p {
       font-style: italic;
       color: #ccc;
-    }
-
-    #location {
-      text-align: center;
-      margin-top: 2em;
     }
 
     /* Переключатель темы */
@@ -193,17 +212,136 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      z-index: 100; /* Чтобы переключатель был над всем */
     }
 
     #theme-toggle:hover {
       background-color: #777;
     }
 
+    /* Переключатель языка */
+    #language-select {
+      position: fixed;
+      top: 1em;
+      left: 1em;
+      background-color: #555;
+      color: #eee;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      z-index: 100;
+    }
+
+    #language-select:hover {
+      background-color: #777;
+    }
+
+    /* Светлая тема */
+    body.light-theme {
+      background-color: #f8f8f8;
+      color: #333;
+    }
+
+    body.light-theme header {
+      background-color: #eee;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+    }
+
+    body.light-theme nav a {
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    body.light-theme nav a:hover {
+      background-color: #ccc;
+    }
+
+    body.light-theme .category {
+      background-color: #eee;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-theme .category h2 {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    body.light-theme .category h2:hover {
+      background-color: #bbb;
+    }
+
+    body.light-theme .subcategory a {
+      color: #555;
+    }
+
+    body.light-theme .subcategory a:hover {
+      background-color: #ddd;
+    }
+
+    body.light-theme .product {
+      background-color: #eee;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-theme .product img {
+      border-bottom: 1px solid #ccc;
+      filter: none; /* Отключаем черно-белый фильтр */
+    }
+
+    body.light-theme .product a {
+      color: #007bff;
+    }
+
+    body.light-theme .product a:hover {
+      background-color: #e9ecef;
+    }
+
+    body.light-theme footer {
+      background-color: #eee;
+      color: #333;
+      border-top: 1px solid #ccc;
+    }
+
+    body.light-theme #theme-toggle {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    body.light-theme #theme-toggle:hover {
+      background-color: #bbb;
+    }
+
+    body.light-theme #language-select {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    body.light-theme #language-select:hover {
+      background-color: #bbb;
+    }
+
+    body.light-theme #catalog-toggle {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    body.light-theme #catalog-toggle:hover {
+      background-color: #bbb;
+    }
+
   </style>
 </head>
 <body>
 
-  <button id="theme-toggle">Сменить тему</button>  <!-- Переключатель темы -->
+  <button id="theme-toggle">Сменить тему</button>
+  <select id="language-select">  <!-- Выбор языка -->
+    <option value="ru">Русский</option>
+    <option value="en">English</option>
+    <option value="ro">Română</option>
+  </select>
 
   <header>
     <h1>Gorpcore Каталог</h1>
@@ -221,8 +359,9 @@
       <p>Приходите к нам по адресу: ул. Кольцовская, 1.</p>
     </section>
 
+    <button id="catalog-toggle">Открыть каталог</button>  <!-- Кнопка открытия каталога -->
+
     <section id="categories-list">
-      <h2>Одежда и обувь</h2>  <!-- Текст в каталог -->
       <!-- Сюда JavaScript будет добавлять категории -->
     </section>
 
@@ -255,6 +394,13 @@
       body.classList.toggle('light-theme');
     }
 
+    // Функция смены языка (пока просто выводит в консоль)
+    function changeLanguage() {
+      const language = document.getElementById('language-select').value;
+      console.log(`Выбран язык: ${language}`);
+      // Здесь будет код для смены языка (например, подгрузка другого JSON)
+    }
+
     async function loadJSON(url) {
       try {
         const response = await fetch(url);
@@ -272,6 +418,7 @@
       const categoriesList = document.getElementById('categories-list');
       const productsContainer = document.getElementById('products-container');
       const productsDiv = productsContainer.querySelector('.products');
+      const catalogToggle = document.getElementById('catalog-toggle');
 
       const categoriesData = await loadJSON('categories.json');
 
@@ -351,6 +498,15 @@
       // Добавляем обработчик для переключателя темы
       const themeToggle = document.getElementById('theme-toggle');
       themeToggle.addEventListener('click', toggleTheme);
+
+      // Добавляем обработчик для смены языка
+      const languageSelect = document.getElementById('language-select');
+      languageSelect.addEventListener('change', changeLanguage);
+
+      // Добавляем обработчик для открытия/закрытия каталога
+      catalogToggle.addEventListener('click', () => {
+        categoriesList.classList.toggle('open');
+      });
     });
   </script>
 </body>
