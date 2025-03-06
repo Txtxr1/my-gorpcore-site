@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gorpcore Каталог</title>
+  <style> /* ... (CSS стили) ... */ </style>
+</head>
+<body>
+  <header> /* ... (Header) ... */ </header>
+  <main>
+    <section id="categories-list"> /* ... (categories-list) ... */ </section>
+    <section id="products-container" style="display: none;"> /* ... (products-container) ... */ </section>
+    <section id="location"> /* ... (location) ... */ </section>
+    <section id="about-us"> /* ... (about-us) ... */ </section>
+  </main>
+  <footer> /* ... (Footer) ... */ </footer
+
+  <script>
+    async function loadJSON(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Ошибка при загрузке JSON:", error);
+        return null; // Важно вернуть null, чтобы код знал, что произошла ошибка
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      const categoriesList = document.getElementById('categories-list');
+      const productsContainer = document.getElementById('products-container');
+      const productsDiv = productsContainer.querySelector('.products');
+
+      const categoriesData = await loadJSON('categories.json');
+
+      if (categoriesData) { // Проверяем, что данные успешно загружены
+        categoriesData.forEach(category => {
+          const categoryElement = document.createElement('div');
+          categoryElement.classList.add('category');
+
+          const categoryHeader = document.createElement('h2');
+          categoryHeader.textContent = category.name;
+          categoryHeader.addEventListener('click', () => {
+            productsContainer.style.display = 'flex';
+            productsDiv.innerHTML = '';
+            if(category.subcategories) {
+              category.subcategories.forEach(subcategory => {
+                if(subcategory.products){
+                  subcategory.products.forEach(product => {
+                    addProductToContainer(product, productsDiv);
+                  });
+                }
+              });
+            }
+          });
+          categoryElement.appendChild(categoryHeader);
+
+          const subcategoriesList = document.createElement('ul');
+          subcategoriesList.classList.add('subcategories');
+
+          category.subcategories.forEach(subcategory => {
+            const subcategoryElement = document.createElement('li');
+            subcategoryElement.classList.add('subcategory');
+            const subcategoryLink = document.createElement('a');
+            subcategoryLink.href = "#";
+            subcategoryLink.textContent = subcategory.name;
+
+            subcategoryLink.addEventListener('click', (event) => {
+              event.preventDefault();
+              productsContainer.style.display = 'flex';
+              productsDiv.innerHTML = '';
+
+              if (subcategory.products) {
+                subcategory.products.forEach(product => {
+                  addProductToContainer(product, productsDiv);
+                });
+              }
+            });
+
+            subcategoryElement.appendChild(subcategoryLink);
+            subcategoriesList.appendChild(subcategoryElement);
+          });
+
+          categoryElement.appendChild(subcategoriesList);
+          categoriesList.appendChild(categoryElement);
+        });
+      } else {
+        categoriesList.textContent = "Ошибка: не удалось загрузить данные о категориях.";
+      }
+
+      function addProductToContainer(product, container) {
+        // Проверяем, существует ли изображение
+        const imagePath = product.image;
+        const img = new Image();
+        img.src = imagePath;
+        img.onerror = () => {
+            console.error(`Изображение не найдено: ${imagePath}`);
+        };
+
+        const productElement = document.createElement('div');
+        productElement.classList.add('product');
+        productElement.innerHTML = `
+          <img src="" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <a href="#">Подробнее</a>
+        `;
+        container.appendChild(productElement);
+      }
+    });
+  </script>
+</body>
+</html>
