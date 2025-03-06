@@ -9,22 +9,7 @@
         "name": "Куртки",
         "slug": "kurtki",
         "products": [
-          {
-            "id": 111,
-            "name": "Куртка The North Face Nuptse",
-            "slug": "tnf-nuptse",
-            "image": "img/tnf_nuptse.jpg",
-            "price": 35000,
-            "description": "Классическая пуховая куртка для города и гор."
-          },
-          {
-            "id": 112,
-            "name": "Куртка Arc'teryx Beta AR",
-            "slug": "arcteryx-beta-ar",
-            "image": "img/arcteryx_beta_ar.jpg",
-            "price": 60000,
-            "description": "Мембранная куртка для защиты от любой непогоды."
-          }
+          /* ... (Куртки) ... */
         ]
       },
       {
@@ -32,22 +17,7 @@
         "name": "Штаны",
         "slug": "shtany",
         "products": [
-          {
-            "id": 121,
-            "name": "Штаны Salomon Wayfarer",
-            "slug": "salomon-wayfarer",
-            "image": "img/salomon_wayfarer.jpg",
-            "price": 12000,
-            "description": "Удобные и прочные штаны для треккинга."
-          },
-          {
-            "id": 122,
-            "name": "Штаны Stone Island",
-            "slug": "stone-island",
-            "image": "img/stone_island_pants.jpg",
-            "price": 40000,
-            "description": "Функциональные штаны премиум-класса."
-          }
+          /* ... (Штаны) ... */
         ]
       }
     ]
@@ -62,21 +32,50 @@
         "name": "Кроссовки",
         "slug": "krossovki",
         "products": [
+          /* ... (Кроссовки) ... */
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Аксессуары",
+    "slug": "aksessuary",
+    "subcategories": [
+      {
+        "id": 31,
+        "name": "Рюкзаки",
+        "slug": "ryukzaki",
+        "products": [
           {
-            "id": 211,
-            "name": "Кроссовки Salomon XT-6",
-            "slug": "salomon-xt6",
-            "image": "img/salomon_xt6.jpg",
-            "price": 18000,
-            "description": "Легендарные трейловые кроссовки для города."
-          },
+            "id": 311,
+            "name": "Рюкзак Gregory Baltoro 65",
+            "slug": "gregory-baltoro",
+            "image": "img/gregory_baltoro.jpg",
+            "price": 25000,
+            "description": "Надежный рюкзак для длительных походов."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Головные уборы",
+    "slug": "golovnye-ubory",
+    "subcategories": [
+      {
+        "id": 41,
+        "name": "Шапки",
+        "slug": "shapki",
+        "products": [
           {
-            "id": 212,
-            "name": "Кроссовки Hoka Speedgoat 5",
-            "slug": "hoka-speedgoat",
-            "image": "img/hoka_speedgoat.jpg",
-            "price": 15000,
-            "description": "Кроссовки для бега по пересеченной местности с отличной амортизацией."
+            "id": 411,
+            "name": "Шапка The North Face",
+            "slug": "tnf-shapka",
+            "image": "img/tnf_shapka.jpg",
+            "price": 3000,
+            "description": "Теплая и стильная шапка на каждый день."
           }
         ]
       }
